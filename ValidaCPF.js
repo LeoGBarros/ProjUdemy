@@ -17,16 +17,16 @@ Se o número digito for maior que 9, consideramos 0.
 function ValidaCPF(cpfEnviado) {
   Object.defineProperty(this, 'cpfLimpo', {
     enumerable: true,
-    get: function() {
+    get: function () {
       return cpfEnviado.replace(/\D+/g, '');
-    }
+    },
   });
 }
 
-ValidaCPF.prototype.valida = function() {
-  if(typeof this.cpfLimpo === 'undefined') return false;
-  if(this.cpfLimpo.length !== 11) return false;
-  if(this.isSequencia()) return false;
+ValidaCPF.prototype.valida = function () {
+  if (typeof this.cpfLimpo === 'undefined') return false;
+  if (this.cpfLimpo.length !== 11) return false;
+  if (this.isSequencia()) return false;
 
   const cpfParcial = this.cpfLimpo.slice(0, -2);
   const digito1 = this.criaDigito(cpfParcial);
@@ -36,12 +36,12 @@ ValidaCPF.prototype.valida = function() {
   return novoCpf === this.cpfLimpo;
 };
 
-ValidaCPF.prototype.criaDigito = function(cpfParcial) {
+ValidaCPF.prototype.criaDigito = function (cpfParcial) {
   const cpfArray = Array.from(cpfParcial);
 
   let regressivo = cpfArray.length + 1;
   const total = cpfArray.reduce((ac, val) => {
-    ac += (regressivo * Number(val));
+    ac += regressivo * Number(val);
     regressivo--;
     return ac;
   }, 0);
@@ -50,14 +50,14 @@ ValidaCPF.prototype.criaDigito = function(cpfParcial) {
   return digito > 9 ? '0' : String(digito);
 };
 
-ValidaCPF.prototype.isSequencia = function() {
+ValidaCPF.prototype.isSequencia = function () {
   const sequencia = this.cpfLimpo[0].repeat(this.cpfLimpo.length);
   return sequencia === this.cpfLimpo;
 };
 
-const cpf = new ValidaCPF('070.987.720-03');
+const cpf = new ValidaCPF('439.888.458-08');
 
-if(cpf.valida()) {
+if (cpf.valida()) {
   console.log('Cpf válido');
 } else {
   console.log('Cpf inválido');
